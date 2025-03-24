@@ -14,8 +14,7 @@ class TestChallenges(unittest.TestCase):
 
     def test_crypto_challenge(self):
         """Test the crypto challenge solution."""
-        self.assertTrue(verify_solution('#challenge-3-crypto', 
-            'the most secret point in the world is the one that\'s never spoke'))
+        self.assertTrue(verify_solution('#challenge-3-crypto', 'What is the most secret point in the dlrow?'))
         self.assertFalse(verify_solution('#challenge-3-crypto', 'wrong'))
 
     def test_challenge_progression(self):

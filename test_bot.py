@@ -1,7 +1,9 @@
 import unittest
 from unittest.mock import MagicMock, patch
+
 from bot import CTFGame
-from challenges import CHALLENGES, verify_solution, get_next_channel
+from challenges import CHALLENGES, get_next_channel, verify_solution
+
 
 class TestCTFGame(unittest.TestCase):
     def setUp(self):
@@ -16,7 +18,12 @@ class TestCTFGame(unittest.TestCase):
         # Test correct solutions
         self.assertTrue(verify_solution("#challenge-1-welcome", "fire"))
         self.assertTrue(verify_solution("#challenge-2-binary", "paris"))
-        self.assertTrue(verify_solution("#challenge-3-crypto", "the most secret point in the world is the one that's never spoke"))
+        self.assertTrue(
+            verify_solution(
+                "#challenge-3-crypto",
+                "the most secret point in the world is the one that's never spoke",
+            )
+        )
         self.assertTrue(verify_solution("#challenge-4-final", "CTF{1RC_Ch4ll3ng3_M4st3r}"))
 
         # Test incorrect solutions
@@ -45,7 +52,7 @@ class TestCTFGame(unittest.TestCase):
         """Test the join handler"""
         mock_mask = MagicMock()
         mock_mask.nick = "TestUser"
-        
+
         # Test joining a challenge channel
         self.game.handle_join(mock_mask, "#challenge-1-welcome")
         self.mock_bot.privmsg.assert_called_once()
@@ -58,17 +65,16 @@ class TestCTFGame(unittest.TestCase):
         # Test correct solution
         self.game.handle_challenge_solution(mock_mask, "fire")
         self.mock_bot.privmsg.assert_called_with(
-            mock_mask.nick,
-            "Correct! Join #challenge-2-binary for the next challenge!"
+            mock_mask.nick, "Correct! Join #challenge-2-binary for the next challenge!"
         )
 
         # Test final challenge solution
         self.mock_bot.privmsg.reset_mock()
         self.game.handle_challenge_solution(mock_mask, "CTF{1RC_Ch4ll3ng3_M4st3r}")
         self.mock_bot.privmsg.assert_called_with(
-            mock_mask.nick,
-            "Congratulations! You've completed all challenges!"
+            mock_mask.nick, "Congratulations! You've completed all challenges!"
         )
 
-if __name__ == '__main__':
-    unittest.main() 
+
+if __name__ == "__main__":
+    unittest.main()
